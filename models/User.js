@@ -7,7 +7,7 @@ const UserSchema = new Schema(
       type: String,
       trim: true,
       unique: true,
-      required: 'Please enter a username!'
+      required: true
     },
     email: {
       type: String,
@@ -47,7 +47,7 @@ const UserSchema = new Schema(
 // reduce walks through the array, it passes the accumulating total and the 
 // current value of comment into the function, with the return of the function revising the total for the next iteration through the array.
 UserSchema.virtual('friendCount').get(function () {
-  return this.friends.reduce((total, friend) => total + friend.length + 1, 0);
+  return this.friends.length;
 });
 
 const User = model('User', UserSchema);

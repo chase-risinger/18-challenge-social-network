@@ -9,10 +9,13 @@ const ReactionSchema = new Schema(
             default: () => new Types.ObjectId()
         },
         reactionBody: {
-            type: String
+            type: String,
+            required: true,
+            maxlength: 280
         },
         username: {
-            type: String
+            type: String,
+            required: true
         },
         createdAt: {
             type: Date,
@@ -31,7 +34,7 @@ const ThoughtSchema = new Schema(
     {
         thoughtText: {
             type: String,
-            required: 'Please enter some text!',
+            required: true,
             minlength: 1,
             maxlength: 280
         },
@@ -42,7 +45,7 @@ const ThoughtSchema = new Schema(
         },
         username: {
             type: String,
-            required: 'Please enter your username!'
+            required: true
         },
         // use ReplySchema to validate data for a reply
         reactions: [ReactionSchema]
