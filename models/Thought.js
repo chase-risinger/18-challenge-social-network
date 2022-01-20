@@ -30,7 +30,10 @@ const ReactionSchema = new Schema(
 const ThoughtSchema = new Schema(
     {
         thoughtText: {
-            type: String
+            type: String,
+            required: 'Please enter some text!',
+            minlength: 1,
+            maxlength: 280
         },
         createdAt: {
             type: Date,
@@ -38,7 +41,8 @@ const ThoughtSchema = new Schema(
             get: createdAtVal => dateFormat(createdAtVal)
         },
         username: {
-            type: String
+            type: String,
+            required: 'Please enter your username!'
         },
         // use ReplySchema to validate data for a reply
         reactions: [ReactionSchema]

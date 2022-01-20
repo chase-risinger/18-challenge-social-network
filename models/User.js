@@ -4,10 +4,16 @@ const dateFormat = require('../utils/dateFormat');
 const UserSchema = new Schema(
   {
     username: {
-      type: String
+      type: String,
+      trim: true,
+      unique: true,
+      required: 'Please enter a username!'
     },
     email: {
-      type: String
+      type: String,
+      required: true,
+      unique: true,
+      match: [/.+@.+\..+/]
     },
     createdAt: {
       type: Date,

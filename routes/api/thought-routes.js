@@ -11,6 +11,9 @@ const {
 // /api/thoughts/<userId>
 router.route('/:userId').post(addThought);
 
+// /api/thoughts/<thoughtId>
+router.route('/:id').get(getThoughtById)
+
 // /api/thoughts
 router.route('/').get(getAllThoughts)
 
