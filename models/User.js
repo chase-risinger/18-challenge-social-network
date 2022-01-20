@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const PizzaSchema = new Schema(
+const UserSchema = new Schema(
   {
-    pizzaName: {
+    username: {
       type: String
     },
-    createdBy: {
+    email: {
       type: String
     },
     createdAt: {
@@ -14,15 +14,16 @@ const PizzaSchema = new Schema(
       default: Date.now,
       get: (createdAtVal) => dateFormat(createdAtVal) // this is a getter. we are are using the dateFormate.js file in utils folder
     },
-    size: {
-      type: String,
-      default: 'Large'
-    },
-    toppings: [],
-    comments: [
+    thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Comment'
+        ref: 'Thoughts'
+      }
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
       }
     ]
   },
@@ -39,10 +40,10 @@ const PizzaSchema = new Schema(
 // virtuals are great, they make life easier, they are a mtethod to access a field that doesn't actually exist in the database
 // reduce walks through the array, it passes the accumulating total and the 
 // current value of comment into the function, with the return of the function revising the total for the next iteration through the array.
-PizzaSchema.virtual('commentCount').get(function () {
-  return this.comments.reduce((total, comment) => total + comment.replies.length + 1, 0);
+UserSchema.virtual('friendCount').get(function () {
+  return this.friends.reduce((total, friend) => total + friend.length + 1, 0);
 });
 
-const Pizza = model('Pizza', PizzaSchema);
+const User = model('User', UserSchema);
 
-module.exports = Pizza;
+module.exports = User;
