@@ -1,6 +1,17 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+    // get all thoughts
+    getAllThoughts(req, res) {
+        Thought.find({})
+            .select('-__v') // telling it not to select __v (the - sign means no)
+            .then(dbThoughtData => res.json(dbThoughtData))
+            .catch(err => {
+                console.log(err);
+                res.sendStatus(400);
+            });
+    },
+
     // add thought to user
     addThought({ params, body }, res) {
         console.log(body);

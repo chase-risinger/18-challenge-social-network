@@ -5,7 +5,11 @@ const userController = {
   getAllUsers(req, res) {
     User.find({})
       .populate({ // this is going to give us the full comment, rather than just the comment id
-        path: 'thoughts', // tells it which path to take
+        path: 'api/thoughts', // tells it which path to take
+        select: '-__v' // telling it not to select __v (the - sign means no)
+      })
+      .populate({ // this is going to give us the full comment, rather than just the comment id
+        path: 'api/users/friends', // tells it which path to take
         select: '-__v' // telling it not to select __v (the - sign means no)
       })
       .select('-__v') // telling it not to select __v (the - sign means no)
@@ -21,7 +25,7 @@ const userController = {
   getUserById({ params }, res) {
     User.findOne({ _id: params.id })
       .populate({
-        path: 'thoughts',
+        path: 'api/thoughts',
         select: '-__v'
       })
       .select('-__v')
@@ -69,6 +73,25 @@ const userController = {
         res.json(dbUserData);
       })
       .catch(err => res.status(400).json(err));
+  },
+
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      // it is getting the userId from the router in user-routes.js  (i think)
+      { _id: params.userId },
+      // $push adds a reaction to the array
+      { $push: { friends: params.friendId } },
+      { new: true }
+    )
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.json(err));
+
   }
 };
 
